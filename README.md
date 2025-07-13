@@ -1,10 +1,11 @@
-
-
-
-
 # NXP\_AIM\_INDIA\_2025\_MY\_REPO 🚀
 
-This repository tracks my development on the NXP Autonomous Inventory Management (AIM) Challenge — building a B3RB rover that autonomously navigates warehouse shelves, decodes QR codes, and identifies objects using YOLOv5 + ROS 2.
+This repository tracks my development and custom enhancements for the **NXP Autonomous Inventory Management (AIM) Challenge 2025**. The goal is to build an autonomous B3RB rover that:
+
+* Navigates warehouse environments
+* Decodes QR codes
+* Detects shelf objects using YOLOv5 (quantized TFLite)
+* Publishes inventory and shelf metadata using ROS 2
 
 ---
 
@@ -12,44 +13,44 @@ This repository tracks my development on the NXP Autonomous Inventory Management
 
 ```
 NXP_AIM_INDIA_2025_MY_REPO/
-├── b3rb_ros_aim_india/           # Your modified ROS nodes for AIM India
-│   ├── b3rb_ros_warehouse.py
-│   ├── b3rb_ros_object_recog.py
-│   └── ... others
-├── resource/                     # YAML, TFLite, model files
+├── b3rb_ros_aim_india/           # Modified ROS nodes for AIM India
+│   ├── b3rb_ros_warehouse.py     # QR code + navigation logic
+│   ├── b3rb_ros_object_recog.py  # Object detection using YOLOv5n
+│   └── ...
+├── resource/                     # Model + label files
 │   ├── coco.yaml
 │   ├── yolov5n-int8.tflite
 │   └── ...
-├── docs/                         # Notes, screenshots, test logs
+├── docs/                         # Notes, screenshots, debug logs
 ├── LICENSE
-└── README.md                     # (This file)
+└── README.md                     # This file
 ```
 
 ---
 
 ## 🎯 Project Overview
 
-* **Goal:** Implement an autonomous inventory-tracking rover in simulation using ROS 2 and Gazebo.
-* **Key Features:**
+* **Challenge:** Develop an autonomous robot in simulation using ROS 2 & Gazebo.
+* **Objectives:**
 
-  * Navigate to a sequence of warehouse shelves using heuristic angles encoded in QR codes.
-  * Decode QR codes positioned on both sides of each shelf.
-  * Recognize objects on shelves using a quantized YOLOv5 model.
-  * Publish object counts and QR metadata reliably to `/shelf_data`.
-  * Reveal hidden shelves via curtain mechanics (driven by QR publication order).
+  * Navigate to all warehouse shelves
+  * Decode left and right QR codes per shelf
+  * Detect and count objects using an onboard YOLOv5 model
+  * Publish structured data to `/shelf_data` (custom `WarehouseShelf` message)
+  * Enable curtain mechanics by visiting shelves in a specific order
 
 ---
 
-## 🔧 Development Status & Progress
+## 🔧 Development Status
 
-| Component                            | Status        | Notes                           |
-| ------------------------------------ | ------------- | ------------------------------- |
-| ROS Node: `b3rb_ros_warehouse.py`    | ✅ In progress | QR decoding + navigation        |
-| ROS Node: `b3rb_ros_object_recog.py` | ✅ In progress | YOLO detection tuned            |
-| GUI Progress Table                   | ⚙ Partially   | Populates objects + QR code     |
-| ROS2 Nav2 tuning                     | ⚙ In progress | nav2.yaml and BT config         |
-| Frontier-based exploration logic     | ⚙ In design   | For exploring unknown map       |
-| Submission-ready packaging           | ❌ Pending     | Final cleanup before submission |
+| Component                  | Status        | Notes                           |
+| -------------------------- | ------------- | ------------------------------- |
+| `b3rb_ros_warehouse.py`    | ✅ In progress | QR code reading + nav client    |
+| `b3rb_ros_object_recog.py` | ✅ In progress | YOLO TFLite + object publishing |
+| GUI Progress Table         | ⚙ Partial     | Tkinter GUI optional module     |
+| Nav2 + SLAM Configuration  | ⚙ In progress | BT navigator + tuning ongoing   |
+| Frontier Exploration       | ⚙ Planned     | For autonomous map discovery    |
+| Submission Packaging       | ❌ Pending     | Final clean-up before deadline  |
 
 ---
 
@@ -57,158 +58,184 @@ NXP_AIM_INDIA_2025_MY_REPO/
 
 ### Prerequisites
 
-* Ubuntu 22.04 (Jammy)
+* Ubuntu 22.04 LTS
 * ROS 2 Humble
-* CogniPilot (AIRY) installed per official AIM India instructions
-* Gazebo + Nav2 + SLAM configured via `cranium`
+* CogniPilot `cranium` setup (AIRY base)
+* Gazebo, Nav2, SLAM Toolbox
 
 ### Installation
 
 ```bash
 cd ~/cognipilot/cranium/src/
 git clone https://github.com/Ayush-Aditya/NXP_AIM_INDIA_2025_MY_REPO.git
-# Move your forked package into the expected workspace structure
 mv NXP_AIM_INDIA_2025_MY_REPO b3rb_ros_aim_india
 
-# Clean and rebuild cranium workspace
 cd ~/cognipilot/cranium
 colcon build --packages-select b3rb_ros_aim_india
 source install/setup.bash
 ```
 
-### Simulation Launch
+---
+
+## 🚀 Launch Instructions
+
+### Run Simulation
 
 ```bash
 ros2 launch b3rb_gz_bringup sil.launch.py \
   world:=nxp_aim_india_2025/warehouse_X \
   warehouse_id:=<N> shelf_count:=<M> \
-  initial_angle:=<initial_deg> x:=0.0 y:=0.0 yaw:=0.0
+  initial_angle:=<deg> x:=0.0 y:=0.0 yaw:=0.0
 ```
 
----
+### Run Nodes
 
-## 🧪 How to Test
+```bash
+# Warehouse navigation + QR logic
+ros2 run b3rb_ros_aim_india explore
 
-1. **Run the warehouse node:**
+# Object detection node
+ros2 run b3rb_ros_aim_india detect
+```
 
-   ```bash
-   ros2 run b3rb_ros_aim_india explore
-   ```
-2. **Run the detection node (object recognition):**
+### Test Output
 
-   ```bash
-   ros2 run b3rb_ros_aim_india detect
-   ```
-3. **Verify Topics:**
+```bash
+ros2 topic echo /shelf_objects
+ros2 topic echo /shelf_data
+```
 
-   ```bash
-   ros2 topic echo /shelf_objects
-   ros2 topic echo /shelf_data
-   ```
-4. **Visual Debugging:**
-
-   * Launch Foxglove with `/debug_images/qr_code` and `/debug_images/object_recog`
-   * Use OpenCV windows if supported
+Use `/debug_images/qr_code` and `/debug_images/object_recog` in **Foxglove** or **rqt\_image\_view** for visual debug.
 
 ---
 
-## 🛠️ Features & Improvements
+## 🌐 SLAM & Navigation Overview
 
-### Developed:
+* **Occupancy Grid Map:**
 
-* ✅ QR code detection using `pyzbar`.
-* ✅ Object detection using quantized YOLOv5 TFLite.
-* ✅ Publishing of `synapse_msgs/WarehouseShelf` on `/shelf_data`.
-* ✅ GUI progress table (optional, toggle via `PROGRESS_TABLE_GUI` flag).
+  * `/map` = Static 2D costmap
+  * `/global_costmap/costmap` = Inflated map
 
-### Planned Enhancements:
+* **Coordinate Frames:**
 
-* 🛣️ Better shelf localization strategy (vision-based + map-based).
-* 🔄 Navigation recovery logic to handle Nav2 failures.
-* 🔁 State machine to track shelf visits and commands.
-* 📉 Optimize confidence thresholds and NMS parameters.
-* 🧰 Tune Nav2 behaviors and SLAM for robust movement.
+  * Origin = Starting robot pose
+  * Resolution = meters per cell
+  * Cells: 0 = free, 100 = occupied, -1 = unknown
+
+* **Frontier Detection:**
+
+  * Uses occupancy grid to detect unexplored regions
+  * Selects goals for autonomous exploration
+
+* **Navigation Goals:**
+
+  * Sent via Nav2 action client with pose + yaw
+  * Feedback via callbacks, with cancel-on-failure logic
 
 ---
-b3rb_ros_warehouse.py SCRIPT FUNCTIONALITY OVERVIEW
-The explore node provides a foundational structure.
 
-SLAM MAP (INTRODUCTION & UNDERSTANDING)
-The maps are created using LIDAR, IMU and odometry data.
-Coordinate Frames:
-Occupancy Grid Frame: SLAM maps are shared as nav_msgs/OccupancyGrid which is a 2-D grid.
-Each cell represents the probability (expressed as 0-100) of being occupied by an object.
-Thus, 0 = free space, 100 = occupied by obstacle; -1 (special case) = unexplored space.
-For conversion to world coordinate frame:
-Origin: Position of the bottom-left corner of the map in the world frame in meters.
-Resolution: Length of each grid cell in meters.
-(0, 0) is the bottom-most and left-most cell in the map in the below diagrams.
-World Coordinate Frame: Real world coordinates in meters.
-Origin: The starting point of the robot.
-Types of Occupancy Grid Frames:
-Static costmap (/map): Simple map used for quick decisions​
-Global costmap (/global_costmap/costmap): Static costmap + inflation
-Inflation: The expanding of obstacles in the costmap to create a buffer zone around them.
-It's used because the robot needs to account for its size and potential localization errors.
-Axes: The axes for static and global maps are given as follows. (NOTE: x-axis is robot's front direction at starting.)
-<img width="1328" height="562" alt="image" src="https://github.com/user-attachments/assets/127ebfbf-7057-402b-8bea-f40adf76dcd7" />
+## 🔧 QR Code + Object Detection
 
+### QR Code (in `b3rb_ros_warehouse.py`)
 
-NAVIGATION FRAMEWORK (BASE FUNCTIONALITY)
-Core Navigation Logic: The script offers a framework for navigation using a Nav2 action client.
-Participants provide a goal pose, and the Nav2 stack manages robot movement.
-Goal: Consists of x-y coordinates (in world coordinate frame) and yaw (angle about the z-axis).
-NOTE: YAW is the angle (between 0 to 2π) from the Positive x-axis in CCW direction.
-The Nav2 stack provides feedback on the current goal's status via a feedback callback.
-A mechanism to cancel an ongoing navigation goal is included.
-This can be used if a goal repeatedly fails or if a more optimal goal is found.
-Autonomous Exploration Example (Frontier-Based):
-The script includes a demo frontier-based exploration approach for space exploration.
-This demonstrates Nav2 usage and how the warehouse might be initially explored.
-Participants have full autonomy to modify or replace this exploration logic.
-Frontier Detection (get_frontiers_for_space_exploration):
-Identify the boundaries between explored and unknown space.
-Select the next exploration goal intelligently, considering proximity to obstacles.
-Robot Arming: Monitors /cerebri/out/status and attempts to arm via /cerebri/in/joy.
-WAREHOUSE INTERACTION (FRAMEWORK FOR CHALLENGE)
-Shelf Object Handling:
-Subscribes to /shelf_objects (synapse_msgs/WarehouseShelf): self.shelf_objects_callback.
-Participants must process self.shelf_objects_curr for task-specific object identification.
-Publishes to /shelf_data (synapse_msgs/WarehouseShelf): self.publisher_shelf_data.
-Participants must construct and send messages per challenge rules.
-QR Code Detection (Framework):
-Subscribes to /camera/image_raw/compressed: self.camera_image_callback.
-Participants must implement QR decoding logic here.
-Participants may store the the last decoded QR string in self.qr_code_str.
-Optionally publish debug images for QR to /debug_images/qr_code.
-GUI - PROGRESS TABLE (OPTIONAL UTILITY)
-WindowProgressTable Class: A Tkinter-based GUI.
-Functionality:
-Displays a 2 x n grid, mapping to 2 rows and n shelves.
-Can be enabled/disabled using the PROGRESS_TABLE_GUI flag.
-This GUI is provided for participant convenience to track progress. It's use is entirely optional.
-Participants choosing to use it should integrate updates to reflect their challenge progress.
-It's usage is described in shelf_objects_callback.
+* Decodes left and right QR codes on each shelf
+* Stores content in `self.qr_code_str`
+* Optionally publishes `/debug_images/qr_code`
+
+### Object Detection (in `b3rb_ros_object_recog.py`)
+
+* Uses `yolov5n-int8.tflite` + `coco.yaml`
+* Inference using TFLite interpreter
+* Publishes object counts to `/shelf_objects` (type: `WarehouseShelf`)
+* Optionally visualizes with `/debug_images/object_recog`
+
+---
+
+## 📊 GUI - Progress Table
+
+* Optional **Tkinter GUI** for visualizing shelf progress
+* Controlled using `PROGRESS_TABLE_GUI` flag
+* Automatically updates when `/shelf_objects` are published
+
+---
+
+## ✨ Features & Enhancements
+
+### Completed:
+
+* ✅ QR decoding with `pyzbar`
+* ✅ TFLite YOLOv5 object recognition
+* ✅ Publishing to `/shelf_data` and `/shelf_objects`
+* ✅ Debug image support for QR and object view
+* ✅ Modular design for easy upgrades
+
+### Planned:
+
+* 🚜 Better shelf localization (map + vision)
+* ⚡ Recovery logic for failed goals
+* 🔄 Visit tracker & state machine
+* 📊 Confidence + NMS optimization
+* ⚖ Nav2 + SLAM parameter tuning
+
+---
+
+## 📊 How to Contribute (Pull Request Guide)
+
+If you'd like to contribute via Pull Request (PR), here's how:
+
+### 1. Fork the Repo
+
+Go to: [https://github.com/Ayush-Aditya/NXP\_AIM\_INDIA\_2025\_MY\_REPO](https://github.com/Ayush-Aditya/NXP_AIM_INDIA_2025_MY_REPO)
+Click on **"Fork"** to create your own copy.
+
+### 2. Clone Your Fork
+
+```bash
+git clone https://github.com/<your-username>/NXP_AIM_INDIA_2025_MY_REPO.git
+cd NXP_AIM_INDIA_2025_MY_REPO
+git remote add upstream https://github.com/Ayush-Aditya/NXP_AIM_INDIA_2025_MY_REPO.git
+```
+
+### 3. Create a Feature Branch
+
+```bash
+git checkout -b feature/my-contribution
+```
+
+### 4. Make Changes, Commit, Push
+
+```bash
+git add .
+git commit -m "Add: Fixed QR bug and improved nav params"
+git push origin feature/my-contribution
+```
+
+### 5. Open PR
+
+* Go to your GitHub fork.
+* Click **"Compare & Pull Request"**.
+* Fill out description and submit PR!
+
+---
 
 ## 📚 References
 
-* [NXP AIM India 2025 challenge repository](https://github.com/NXPHoverGames/NXP_AIM_INDIA_2025)
-* CogniPilot AIRY Dev Guide
-* ROS 2 Humble + Nav2 documentation
-* `synapse_msgs/WarehouseShelf` message specs
+* [Official NXP AIM India 2025 Repository](https://github.com/NXPHoverGames/NXP_AIM_INDIA_2025)
+* [ROS 2 Humble Documentation](https://docs.ros.org/en/humble/index.html)
+* [Nav2 Tutorials](https://navigation.ros.org/tutorials/docs/)
+* [TFLite Model Zoo](https://www.tensorflow.org/lite/models)
 
 ---
 
 ## 📌 License
 
-This project builds upon the NXP AIM India 2025 open-source base. Licensed under Apache 2.0 (unless otherwise stated). Check individual package files for licensing details.
+Based on the NXP AIM India 2025 challenge code.
+Licensed under the **Apache License 2.0** (see `LICENSE` file for details).
 
 ---
 
 ## 🙌 Contact
 
-For feedback or collaboration, feel free to reach out via GitHub!
+If you want to collaborate, report bugs, or suggest improvements, open an [Issue](https://github.com/Ayush-Aditya/NXP_AIM_INDIA_2025_MY_REPO/issues) or reach out via GitHub!
 
 ---
-
-
