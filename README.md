@@ -176,6 +176,10 @@ Use `/debug_images/qr_code` and `/debug_images/object_recog` in **Foxglove** or 
 * 🔄 Visit tracker & state machine
 * 📊 Confidence + NMS optimization
 * ⚖ Nav2 + SLAM parameter tuning
+  
+<img width="1328" height="562" alt="image" src="https://github.com/user-attachments/assets/16207577-1e3d-4544-b701-6e2b891a3c00" />
+
+https://github.com/Ayush-Aditya/NXP_AIM_INDIA_2025_MY_REPO/blob/main/warehouse4.jpg
 
 ---
 
