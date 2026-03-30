@@ -1,4 +1,4 @@
-# NXP\_AIM\_INDIA\_2025\_MY\_REPO 🚀
+# NXP\_AIM\_INDIA\_2025\_MY\_REPO 
 
 This repository tracks my development and custom enhancements for the **NXP Autonomous Inventory Management (AIM) Challenge 2025**. The goal is to build an autonomous B3RB rover that:
 
@@ -9,7 +9,7 @@ This repository tracks my development and custom enhancements for the **NXP Auto
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```
 NXP_AIM_INDIA_2025_MY_REPO/
@@ -28,7 +28,7 @@ NXP_AIM_INDIA_2025_MY_REPO/
 
 ---
 
-## 🎯 Project Overview
+## Project Overview
 
 * **Challenge:** Develop an autonomous robot in simulation using ROS 2 & Gazebo.
 * **Objectives:**
@@ -45,16 +45,16 @@ NXP_AIM_INDIA_2025_MY_REPO/
 
 | Component                  | Status        | Notes                           |
 | -------------------------- | ------------- | ------------------------------- |
-| `b3rb_ros_warehouse.py`    | ✅ In progress | QR code reading + nav client    |
-| `b3rb_ros_object_recog.py` | ✅ In progress | YOLO TFLite + object publishing |
-| GUI Progress Table         | ⚙ Partial     | Tkinter GUI optional module     |
-| Nav2 + SLAM Configuration  | ⚙ In progress | BT navigator + tuning ongoing   |
-| Frontier Exploration       | ⚙ Planned     | For autonomous map discovery    |
-| Submission Packaging       | ❌ Pending     | Final clean-up before deadline  |
+| `b3rb_ros_warehouse.py`    |  In progress | QR code reading + nav client    |
+| `b3rb_ros_object_recog.py` |  In progress | YOLO TFLite + object publishing |
+| GUI Progress Table         |  Partial     | Tkinter GUI optional module     |
+| Nav2 + SLAM Configuration  |  In progress | BT navigator + tuning ongoing   |
+| Frontier Exploration       |  Planned     | For autonomous map discovery    |
+| Submission Packaging       |  Pending     | Final clean-up before deadline  |
 
 ---
 
-## 🧠 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -77,7 +77,7 @@ source install/setup.bash
 
 ---
 
-## 🚀 Launch Instructions
+##  Launch Instructions
 
 ### Run Simulation
 
@@ -109,7 +109,7 @@ Use `/debug_images/qr_code` and `/debug_images/object_recog` in **Foxglove** or 
 
 ---
 
-## 🌐 SLAM & Navigation Overview
+##  SLAM & Navigation Overview
 
 * **Occupancy Grid Map:**
 
@@ -134,7 +134,7 @@ Use `/debug_images/qr_code` and `/debug_images/object_recog` in **Foxglove** or 
 
 ---
 
-## 🔧 QR Code + Object Detection
+##  QR Code + Object Detection
 
 ### QR Code (in `b3rb_ros_warehouse.py`)
 
@@ -151,7 +151,7 @@ Use `/debug_images/qr_code` and `/debug_images/object_recog` in **Foxglove** or 
 
 ---
 
-## 📊 GUI - Progress Table
+## GUI - Progress Table
 
 * Optional **Tkinter GUI** for visualizing shelf progress
 * Controlled using `PROGRESS_TABLE_GUI` flag
@@ -159,23 +159,23 @@ Use `/debug_images/qr_code` and `/debug_images/object_recog` in **Foxglove** or 
 
 ---
 
-## ✨ Features & Enhancements
+##  Features & Enhancements
 
 ### Completed:
 
-* ✅ QR decoding with `pyzbar`
-* ✅ TFLite YOLOv5 object recognition
-* ✅ Publishing to `/shelf_data` and `/shelf_objects`
-* ✅ Debug image support for QR and object view
-* ✅ Modular design for easy upgrades
+* QR decoding with `pyzbar`
+* TFLite YOLOv5 object recognition
+* Publishing to `/shelf_data` and `/shelf_objects`
+* Debug image support for QR and object view
+* Modular design for easy upgrades
 
 ### Planned:
 
-* 🚜 Better shelf localization (map + vision)
-* ⚡ Recovery logic for failed goals
-* 🔄 Visit tracker & state machine
-* 📊 Confidence + NMS optimization
-* ⚖ Nav2 + SLAM parameter tuning
+* Better shelf localization (map + vision)
+* Recovery logic for failed goals
+* Visit tracker & state machine
+* Confidence + NMS optimization
+* Nav2 + SLAM parameter tuning
   
 <img width="1328" height="562" alt="image" src="https://github.com/user-attachments/assets/16207577-1e3d-4544-b701-6e2b891a3c00" />
 
@@ -222,7 +222,7 @@ git push origin feature/my-contribution
 
 ---
 
-## 📚 References
+## References
 
 * [Official NXP AIM India 2025 Repository](https://github.com/NXPHoverGames/NXP_AIM_INDIA_2025)
 * [ROS 2 Humble Documentation](https://docs.ros.org/en/humble/index.html)
@@ -231,14 +231,14 @@ git push origin feature/my-contribution
 
 ---
 
-## 📌 License
+## License
 
 Based on the NXP AIM India 2025 challenge code.
 Licensed under the **Apache License 2.0** (see `LICENSE` file for details).
 
 ---
 
-## 🙌 Contact
+##  Contact
 
 If you want to collaborate, report bugs, or suggest improvements, open an [Issue](https://github.com/Ayush-Aditya/NXP_AIM_INDIA_2025_MY_REPO/issues) or reach out via GitHub!
 
