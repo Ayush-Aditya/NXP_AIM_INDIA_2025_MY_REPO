@@ -183,7 +183,7 @@ https://github.com/Ayush-Aditya/NXP_AIM_INDIA_2025_MY_REPO/blob/main/warehouse4.
 
 ---
 
-## 📊 How to Contribute (Pull Request Guide)
+##  How to Contribute (Pull Request Guide)
 
 If you'd like to contribute via Pull Request (PR), here's how:
 
