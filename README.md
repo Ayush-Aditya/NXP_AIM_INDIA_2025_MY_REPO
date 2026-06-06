@@ -45,12 +45,12 @@ NXP_AIM_INDIA_2025_MY_REPO/
 
 | Component                  | Status        | Notes                           |
 | -------------------------- | ------------- | ------------------------------- |
-| `b3rb_ros_warehouse.py`    |  In progress | QR code reading + nav client    |
-| `b3rb_ros_object_recog.py` |  In progress | YOLO TFLite + object publishing |
+| `b3rb_ros_warehouse.py`    |  Functional | QR code reading + nav client    |
+| `b3rb_ros_object_recog.py` |  Functional | YOLO TFLite + object publishing |
 | GUI Progress Table         |  Partial     | Tkinter GUI optional module     |
-| Nav2 + SLAM Configuration  |  In progress | BT navigator + tuning ongoing   |
-| Frontier Exploration       |  Planned     | For autonomous map discovery    |
-| Submission Packaging       |  Pending     | Final clean-up before deadline  |
+| Nav2 + SLAM Configuration  |  completed | BT navigator + tuning ongoing   |
+| Frontier Exploration       |  Completed     | For autonomous map discovery    |
+| Submission Packaging       |  Completed     | Final clean-up before deadline  |
 
 ---
 
